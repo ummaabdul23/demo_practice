@@ -1,7 +1,7 @@
 #include "main.h"
 
-void print_Char(int c) {
-    putchar(c);
+void print_Char(char c) {
+    _putchar(c);
 }
 
 void print_str(const char *str, int width, int precision, char flags) {
@@ -45,7 +45,7 @@ void print_str(const char *str, int width, int precision, char flags) {
 
 void print_Dec(int num) {
     char buffer[20];
-    int i;
+    int i = 0;
 
     if (num < 0) {
         _putchar('-');
