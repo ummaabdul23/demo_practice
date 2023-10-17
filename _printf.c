@@ -1,0 +1,83 @@
+#include "main.h"
+
+int _printf(const char *format, ...) {
+    int printed_chars = 0;
+    va_list args;
+    va_start(args, format);
+
+    while (*format) {
+        if (*format == '%') {
+            format++;
+            int width;
+            int precision = -1;
+            char flags = 0;
+            while (*format == '0' || *format == '-') {
+                if (*format == '0') {
+                    flags |= '0';
+                } else if (*format == '-') {
+                    flags |= '-';
+                }
+                format++;
+            }
+            while (_isdigit(*format)) {
+                width = width * 10 + (*format - '0');
+                format++;
+            }
+            if (*format == '.') {
+                format++;
+                precision = 0;
+                while (_isdigit(*format)) {
+                    precision = precision * 10 + (*format - '0');
+                    format++;
+                }
+            }
+
+            if (*format == 'c') {
+                int c = va_arg(args, int);
+                print_Char(c);
+            } else if (*format == 's') {
+                const char *str = va_arg(args, const char*);
+                print_str(str, width, precision, flags);
+            } else if (*format == 'd' || *format == 'i') {
+                int num = va_arg(args, int);
+                print_Dec(num);
+            } else if (*format == 'u') {
+                unsigned int num = va_arg(args, unsigned int);
+                print_Unsig(num);
+            } else if (*format == 'o') {
+                unsigned int num = va_arg(args, unsigned int);
+                print_Oct(num);
+            } else if (*format == 'x') {
+                unsigned int num = va_arg(args, unsigned int);
+                print_Hex(num, 0, width, flags);
+            } else if (*format == 'X') {
+                unsigned int num = va_arg(args, unsigned int);
+                print_Hex(num, 1, width, flags);
+            } else if (*format == 'b') {
+                unsigned int num = va_arg(args, unsigned int);
+                print_Bin(num, width, flags);
+            } else if (*format == 'S') {
+                const char *str = va_arg(args, const char*);
+                print_Str(str, width, precision, flags);
+            } else if (*format == 'p') {
+                void *ptr = va_arg(args, void*);
+                print_Ptr(ptr);
+            } else if (*format == 'r') {
+                const char *str = va_arg(args, const char*);
+                print_Rev(str);
+            } else if (*format == 'R') {
+                const char *str = va_arg(args, const char*);
+                print_Rot13(str);
+            } else if (*format == '%') {
+                putchar('%');
+            }
+        } else {
+            putchar(*format);
+        }
+        format++;
+    }
+
+    va_end(args);
+    return printed_chars;
+}
+
