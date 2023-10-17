@@ -2,15 +2,18 @@
 
 int _printf(const char *format, ...) {
     int printed_chars = 0;
+    int width;
+    int precision;
+    char flags;
     va_list args;
     va_start(args, format);
 
     while (*format) {
         if (*format == '%') {
             format++;
-            int width;
-            int precision = -1;
-            char flags = 0;
+            width = 0;
+	    precision = -1;
+            flags = 0;
             while (*format == '0' || *format == '-') {
                 if (*format == '0') {
                     flags |= '0';
@@ -61,6 +64,10 @@ int _printf(const char *format, ...) {
                 print_Str(str, width, precision, flags);
             } else if (*format == 'p') {
                 void *ptr = va_arg(args, void*);
+		uintptr_t uintptr_ptr = (uintptr_t)ptr;
+                _putchar('0');
+                _putchar('x');
+                print_Hex(uintptr_ptr, 0, 0, 0);
                 print_Ptr(ptr);
             } else if (*format == 'r') {
                 const char *str = va_arg(args, const char*);

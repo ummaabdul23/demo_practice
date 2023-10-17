@@ -31,9 +31,10 @@ void print_Oct(unsigned int num) {
 void print_Hex(unsigned int num, int upper, int width, char flags) {
     char buffer[20];
     int i = 0;
+    int firstNonZeroIndex;
     char hex_chars[] = "0123456789abcdef";
 
-    if (num >= 0) {
+    if (num) {
         if (upper) {
             for (i = 7; i >= 0; i--) {
                 int digit = (num >> (4 * i)) & 0xf;
@@ -46,7 +47,7 @@ void print_Hex(unsigned int num, int upper, int width, char flags) {
             }
         }
 
-        int firstNonZeroIndex = 0;
+        firstNonZeroIndex = 0;
         while (firstNonZeroIndex < 8 && buffer[firstNonZeroIndex] == '0') {
             firstNonZeroIndex++;
         }
@@ -71,12 +72,12 @@ void print_Hex(unsigned int num, int upper, int width, char flags) {
 void print_Bin(unsigned int num, int width, char flags) {
     char buffer[32];
     int j, i = 0;
+    int firstNonZeroIndex;
 
     for (j = 31; j >= 0; j--) {
         buffer[i++] = '0' + ((num >> j) & 1);
     }
-
-    int firstNonZeroIndex;
+    firstNonZeroIndex = 0;
     while (firstNonZeroIndex < 32 && buffer[firstNonZeroIndex] == '0') {
         firstNonZeroIndex++;
     }

@@ -7,6 +7,7 @@
 #include <limits.h>
 #include <unistd.h>
 #include <ctype.h>
+#include <stdint.h>
 
 typedef struct format
 {
