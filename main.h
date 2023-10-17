@@ -17,7 +17,7 @@ typedef struct format
 
 int _putchar(char c);
 void print_mod(void);
-void print_Char(int c);
+void print_Char(char c);
 void print_str(const char *str, int width, int precision, char flags);
 void print_Dec(int num);
 void print_Bin(unsigned int num, int width, char flags);

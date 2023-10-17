@@ -36,7 +36,7 @@ int _printf(const char *format, ...) {
             }
 
             if (*format == 'c') {
-                int c = va_arg(args, int);
+                char  c = va_arg(args, int);
                 print_Char(c);
             } else if (*format == 's') {
                 const char *str = va_arg(args, const char*);
@@ -76,10 +76,10 @@ int _printf(const char *format, ...) {
                 const char *str = va_arg(args, const char*);
                 print_Rot13(str);
             } else if (*format == '%') {
-                putchar('%');
+                _putchar('%');
             }
         } else {
-            putchar(*format);
+            _putchar(*format);
         }
         format++;
     }
