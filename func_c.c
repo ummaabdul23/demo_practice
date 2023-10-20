@@ -1,89 +1,136 @@
 #include "main.h"
 
-void print_Str(const char *str, int width, int precision, char flags) {
-    int count = 0;
-    int i;
-    while (str[count] != '\0') {
-        count++;
-    }
+void print_Str(va_list param, char buffer[], int flag, int width, int precision, int size)
+{
+	int count = 0;
+	int i;
+	char *str = va_arg(param, char*);
 
-    if (precision < 0) {
-        precision = count;
-    } else if (precision > count) {
-        precision = count;
-    }
+	while (str[count] != '\0') {
+		count++;
+	}
 
-    if (width > count) {
-        int padding = width - count;
-        char padChar = ' ';
-        if (flags == '0') {
-            padChar = '0';
-        }
+	if (precision < 0) {
+		precision = count;
+	} else if (precision > count) {
+		precision = count;
+	}
 
-        if ((flags & '-') == 0) {
-            for (i = 0; i < padding; i++) {
-                _putchar(padChar);
-            }
-        }
-    }
-    for (i = 0; i < precision; i++) {
-        if (str[i] >= 32 && str[i] < 127) {
-            _putchar(str[i]);
-        } else {
-            _putchar('\\');
-            _putchar('x');
-            _putchar("0123456789ABCDEF"[((unsigned char)str[i]) >> 4]);
-            _putchar("0123456789ABCDEF"[((unsigned char)str[i]) & 15]);
-        }
-    }
+	if (width > count && (flag & '-') == 0)
+	{
+		int padding = width - count;
+		char padChar = ' ';
+		if (flag == '0') {
+			padChar = '0';
+		}
+		for (i = 0; i < padding; i++)
+			_putchar(padChar);
+	}
+	int printedChar = 0;
 
-    if ((flags & '-') != 0 && width > count) {
-        int padding = width - count;
-        for (i = 0; i < padding; i++) {
-            _putchar(' ');
-        }
-    }
+	for (i = 0; i < precision; i++)
+	{
+		if (str[i] >= 32 && str[i] < 127)
+		{
+			_putchar(str[i]);
+			printedChar++;
+		} else {
+			_putchar('\\');
+			_putchar('x');
+			_putchar("0123456789ABCDEF"[((unsigned char)str[i]) >> 4]);
+			_putchar("0123456789ABCDEF"[((unsigned char)str[i]) & 15]);
+			printedChar += 4;
+		}
+	}
+
+	if ((flags & '-') != 0 && width > count) {
+		int padding = width - count;
+		for (i = 0; i < padding; i++) {
+			_putchar(' ');
+		}
+	}
+	return (printedChar);
 }
 
-void print_Ptr(void *ptr) {
-    unsigned long int num = (unsigned long int)ptr;
-    char buffer[20];
-    int i = 0;
-    char hex_char[] = "0123456789abcdef";
+int print_Ptr(va_list param, char buffer[], int flag, int width, int precision, int size)
+{
+	unsigned long int num = (unsigned long int)va_arg(param, void*);
+	int i = 0;
+	char hex_char[] = "0123456789abcdef";
 
-    _putchar('0');
-    _putchar('x');
+	memset(buffer, 0, BUFFER);
+	buffer[i++] = '0';
+	buffer[i++] = 'x';
 
-    do {
-        buffer[i++] = hex_char[num % 16];
-        num /= 16;
-    } while (num);
+	do {
+		buffer[i++] = hex_char[num % 16];
+		num /= 16;
+	} while (num);
+	int printedChar = 0;
 
-    while (i > 0) {
-        _putchar(buffer[--i]);
-    }
+	if (i < width)
+	{
+	int padding = width - i;
+	char padChar = ' ';
+	if (flag == '0')
+		padChar = '0';
+	if (flag & '-') == 0)
+	{
+		for (int j = 0; j < padding; j++)
+		{
+			_putchar(padChar);
+			printedChar++;
+		}
+	}
+	}
+	for (int j = i - 1; j >= 0; J--)
+	{
+		_putchar(buffer[j]);
+		printedChar++;
+	}
+	if((flag & '-' != 0 && width > i)
+		{
+			int padding = width - i;
+			for (int j = 0; j < padding; j++)
+			{
+			_putchar(' ');
+			printedChar++;
+			}
+		}
+		return (printedChar);
 }
 
-void print_Rev(const char *str) {
-    int count = _strlen(str);
-    int i;
+int print_Rev(va_list param, char buffer[], int flag, int width, int precision, int size)
+{
+	char *str;
+	int count = _strlen(str);
+	int i;
 
-    for (i = count - 1; i >= 0; i--) {
-        _putchar(str[i]);
-    }
+	str = va_arg(param, char *);
+
+	for (i = count - 1; i >= 0; i--)
+	{
+		_putchar(str[i]);
+		count++;
+	}
+	return (count);
 }
 
-void print_Rot13(const char *str) {
-    while (*str) {
-        char c = *str;
-        if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
-            char base = (c >= 'a' && c <= 'z') ? 'a' : 'A';
-            _putchar((c - base + 13) % 26 + base);
-        } else {
-            _putchar(c);
-        }
-        str++;
-    }
+int print_Rot13(va_list param, char buffer[], int flag, int width, int precision, int size)
+{
+	char *str;
+	str = va_arg(param, char *);
+
+	while (*str) {
+		char c = *str;
+		if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
+			char base = (c >= 'a' && c <= 'z') ? 'a' : 'A';
+			_putchar((c - base + 13) % 26 + base);
+		} else {
+			_putchar(c);
+		}
+		str++;
+	}
 }
 /**
  * _isdigit - checks for digit

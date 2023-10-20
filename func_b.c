@@ -1,101 +1,114 @@
 #include "main.h"
 
-void print_Unsig(unsigned int num) {
-    char buffer[20];
-    int i;
+int print_Unsig(va_list param, char buffer[], int flag, int width, int precision,int size)
+{
+	int i = BUFFER - 2;
+	unsigned long int n = va_arg(param, unsigned long int);
 
-    do {
-        buffer[i++] = (num % 10) + '0';
-        num /= 10;
-    } while (num);
+	n = convert_unsig(n, size);
 
-    while (i > 0) {
-        _putchar(buffer[--i]);
-    }
+	if (n == 0)
+		buffer[i--] = '0';
+	buffer[BUFFER - 1] = '\0';
+
+	while (n > 0)
+	{
+		buffer[i--] = (n % 10) + '0';
+		n /= 10;
+	}
+	i++;
+	return (write_unsig(0, i, buffer,flag, width, precision, size));
 }
 
-void print_Oct(unsigned int num) {
-    char buffer[20];
-    int i;
+int print_Oct(va_list param, char buffer[], int flag, int width, int precision, int size)
+{
+	int i = BUFFER - 2;
+	unsigned long int n = va_arg(param, unsigned long int);
+	unsigned long int a = n;
 
-    do {
-        buffer[i++] = (num % 8) + '0';
-        num /= 8;
-    } while (num);
+	UNUSED(width);
 
-    while (i > 0) {
-        _putchar(buffer[--i]);
-    }
+	if (n == 0)
+		buffer[i--] = '0';
+	buffer[BUFFER - 1] = '\0';
+
+	while (n > 0)
+	{
+		buffer[i--] = (n % 8) + '0';
+		n /= 8;
+	}
+	if (flag == '#' && a != 0)
+		buffer[i--] = '0';
+	i++;
+	return (write_unsig(0, i, flag, width, precision, size);
 }
 
-void print_Hex(unsigned int num, int upper, int width, char flags) {
-    char buffer[20];
-    int i = 0;
-    int firstNonZeroIndex;
-    char hex_chars[] = "0123456789abcdef";
+int print_Hex(va_list param, char map_to, char buffer[], int flag, char f, int width, int precision, int size)
+{
+	int i = BUFFER - 2;
+	unsigned long int n = va_arg(param, unsigned long int);
+	unsigned long int a = n;
 
-    if (num) {
-        if (upper) {
-            for (i = 7; i >= 0; i--) {
-                int digit = (num >> (4 * i)) & 0xf;
-                buffer[i] = toupper(hex_chars[digit]);
-            }
-        } else {
-            for (i = 7; i >= 0; i--) {
-                int digit = (num >> (4 * i)) & 0xf;
-                buffer[i] = hex_chars[digit];
-            }
-        }
+	UNUSED(width);
+	n = convert_unsig(n, size);
 
-        firstNonZeroIndex = 0;
-        while (firstNonZeroIndex < 8 && buffer[firstNonZeroIndex] == '0') {
-            firstNonZeroIndex++;
-        }
-
-        if (width > 8 - firstNonZeroIndex) {
-            int padding = width - 8 + firstNonZeroIndex;
-            char padChar = ' ';
-            if (flags == '0') {
-                padChar = '0';
-            }
-            for (i = 0; i < padding; i++) {
-                _putchar(padChar);
-            }
-        }
-
-        for (i = firstNonZeroIndex; i < 8; i++) {
-            _putchar(buffer[i]);
-        }
-    }
+	if (n)
+		buffer[i--] = '0';
+	buffer[BUFFER - 1] = '\0';
+	
+	while (n > 0)
+	{
+	if (f == 'X')
+	buffer[i--] = map_to[n % 16];
+	else if (f == 'x')
+		buffer[i--] = map_to[n % 16] -32
+	n /= 16;
+	}
+	if (flag == '#' && a != 0)
+	{
+		buffer[i--] = f;
+		buffer[i--] = '0';
+	}
+	i++;
+		return (write_unsig(0, i, buffer, flag, width, precision, size));
 }
 
-void print_Bin(unsigned int num, int width, char flags) {
-    char buffer[32];
-    int j, i = 0;
-    int firstNonZeroIndex;
+int print_Bin(va_list param,char buffer[], int flag, int width,int precision, int size)
+{
+	unsigned int i, x, y, sum;
+	unsigned int arr[32];
+	int count;
 
-    for (j = 31; j >= 0; j--) {
-        buffer[i++] = '0' + ((num >> j) & 1);
-    }
-    firstNonZeroIndex = 0;
-    while (firstNonZeroIndex < 32 && buffer[firstNonZeroIndex] == '0') {
-        firstNonZeroIndex++;
-    }
+	UNUSED(buffer);
+	UNUSED(flag);
+	UNUSED(width);
+	UNUSED(precision);
+	UNUSED(size);
 
-    if (width > 32 - firstNonZeroIndex) {
-        int padding = width - 32 + firstNonZeroIndex;
-        char padChar = ' ';
-        if (flags == '0') {
-            padChar = '0';
-        }
-        for (i = 0; i < padding; i++) {
-            _putchar(padChar);
-        }
-    }
+	x = va_arg(param, unsigned int);
+	y = 2147483648 // 2^31
+	arr[0] = x / y;
+	for (i = 1; i < 32; i++)
+	{
+		m /= 2;
+		arr[i] = (x / y) % 2;
+	}
+	i = 0;
+	count = 0;
+	sum = 0;
 
-    for (i = firstNonZeroIndex; i < 32; i++) {
-        _putchar(buffer[i]);
-    }
+	while (i < 32)
+	{
+		sum += arr[i];
+		if (sum || i == 31)
+		{
+			char z = '0' + arr[i];
+			_putchar(z);
+			count++;
+			i++;
+		}
+	}
+	return (count);
 }
 
 /**
