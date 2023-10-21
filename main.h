@@ -4,10 +4,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
-#include <limits.h>
 #include <unistd.h>
-#include <ctype.h>
-#include <stdint.h>
+#include <string.h>
+
+#define UnUsed(i) (void)(i)
+#define BUFFER 1024
 
 typedef struct format
 {
@@ -15,22 +16,32 @@ typedef struct format
 	int (*f)();
 } convert_match;
 
-int _putchar(char c);
-void print_mod(void);
-void print_Char(char c);
-void print_str(const char *str, int width, int precision, char flags);
-void print_Dec(int num);
-void print_Bin(unsigned int num, int width, char flags);
-void print_Hex(unsigned int num, int upper, int width, char flags);
-void print_Oct(unsigned int num);
-void print_Unsig(unsigned int num);
-void print_Str(const char *str, int width, int precision, char flags);
-void print_Ptr(void *ptr);
-void print_Rev(const char *str);
-void print_Rot13(const char *str);
-int _strlen(const char *s);
 int _printf(const char *format, ...);
-int _isdigit(int c);
+char flag(const char **format);
+int width(const char **format);
+int size(const char **format);
+char specifier(const char **format);
+int precision(const char **format);
+int _putchar(char c);
+int print_mod(va_list param, char buffer[]; int flag, int width, int precision,int size);
+int print_Dec(va_list param, char buffer[], int flag, int width, int precision, int size);
+int print_str(va_list param, char buffer[], int flag, int width, int precision, int size);
+int print_str(va_list param, char buffer[], int flag, int width, int precision, int size);
+int _strlen(const char *s);
+int print_Bin(va_list param,char buffer[], int flag, int width,int precision, int size);
+int print_Hex(va_list param, char map_to, char buffer[], int flag, char f, int width, int precision, int size);
+int print_Oct(va_list param, char buffer[], int flag, int width, int precision, int size);
+int print_Unsig(va_list param, char buffer[], int flag, int width, int precision,int size);
+/*int _isdigit(int c);*/
+int print_Rot13(va_list param, char buffer[], int flag, int width, int precision, int size);
+int print_Rev(va_list param, char buffer[], int flag, int width, int precision, int size);
+int print_Ptr(va_list param, char buffer[], int flag, int width, int precision, int size);
+int print_Str(va_list param, char buffer[], int flag, int width, int precision, int size);
+int handle_char(char c, char buffer[], int flag, int width, int precision, int size);
+int write_number(int neg, int index, char buffer[], int flag, int width, int precision, int size);
+int write_num(int index, char buffer[], int flag, int width, int precision, int length, char padd, char extra_c);
+int write_unsig(int neg, int index, char buffer[], int flag, int width, int precision, int size);
+ long int convert_unsig(unsigned long int num, int size);
 
 #endif
 

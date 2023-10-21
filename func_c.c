@@ -1,6 +1,16 @@
 #include "main.h"
+/**
+ *  print_str - print string
+ *  @param: --
+ *  @buffer: --
+ *  @flag: --
+ *  @width: --
+ *  @precision: --
+ *  @size
+ *  Return: int
+ */
 
-void print_Str(va_list param, char buffer[], int flag, int width, int precision, int size)
+int print_Str(va_list param, char buffer[], int flag, int width, int precision, int size)
 {
 	int count = 0;
 	int i;
@@ -16,13 +26,12 @@ void print_Str(va_list param, char buffer[], int flag, int width, int precision,
 		precision = count;
 	}
 
-	if (width > count && (flag & '-') == 0)
+	if (width > count && (flag & 1) == 0)
 	{
 		int padding = width - count;
 		char padChar = ' ';
-		if (flag == '0') {
+		if (flag & 4){
 			padChar = '0';
-		}
 		for (i = 0; i < padding; i++)
 			_putchar(padChar);
 	}
@@ -43,7 +52,7 @@ void print_Str(va_list param, char buffer[], int flag, int width, int precision,
 		}
 	}
 
-	if ((flags & '-') != 0 && width > count) {
+	if ((flags & 1) != 0 && width > count) {
 		int padding = width - count;
 		for (i = 0; i < padding; i++) {
 			_putchar(' ');
@@ -51,13 +60,22 @@ void print_Str(va_list param, char buffer[], int flag, int width, int precision,
 	}
 	return (printedChar);
 }
+/**
+ *  print_str - print pointer
+ *  @param: --
+ *  @buffer: --
+ *  @flag: --
+ *  @width: --
+ *  @precision: --
+ *  @size: --
+ *  Return: int
+ */
 
 int print_Ptr(va_list param, char buffer[], int flag, int width, int precision, int size)
 {
 	unsigned long int num = (unsigned long int)va_arg(param, void*);
 	int i = 0;
 	char hex_char[] = "0123456789abcdef";
-
 	memset(buffer, 0, BUFFER);
 	buffer[i++] = '0';
 	buffer[i++] = 'x';
@@ -70,35 +88,45 @@ int print_Ptr(va_list param, char buffer[], int flag, int width, int precision, 
 
 	if (i < width)
 	{
-	int padding = width - i;
-	char padChar = ' ';
-	if (flag == '0')
-		padChar = '0';
-	if (flag & '-') == 0)
-	{
-		for (int j = 0; j < padding; j++)
+		int padding = width - i;
+		char padChar = ' ';
+		if (flag == 4)
+			padChar = '0';
+		if ((flag & 1) == 0)
 		{
-			_putchar(padChar);
-			printedChar++;
+			for (int j = 0; j < padding; j++)
+			{
+				_putchar(padChar);
+				printedChar++;
+			}
 		}
-	}
 	}
 	for (int j = i - 1; j >= 0; J--)
 	{
 		_putchar(buffer[j]);
 		printedChar++;
 	}
-	if((flag & '-' != 0 && width > i)
-		{
+	if((flag & 1 != 0 && width > i)
+			{
 			int padding = width - i;
 			for (int j = 0; j < padding; j++)
 			{
 			_putchar(' ');
 			printedChar++;
 			}
-		}
-		return (printedChar);
-}
+			}
+			return (printedChar);
+			}
+			/**
+			 *  print_str - print reverse string
+			 *  @param: --
+			 *  @buffer: --
+			 *  @flag: --
+			 *  @width: --
+			 *  @precision: --
+			 *  @size: --
+			 *  Return: int
+			 */
 
 int print_Rev(va_list param, char buffer[], int flag, int width, int precision, int size)
 {
@@ -115,6 +143,16 @@ int print_Rev(va_list param, char buffer[], int flag, int width, int precision, 
 	}
 	return (count);
 }
+/**
+ *  print_str - print Rot13
+ *  @param: --
+ *  @buffer: --
+ *  @flag: --
+ *  @width: --
+ *  @precision: --
+ *  @size: --
+ *  Return: int
+ */
 
 int print_Rot13(va_list param, char buffer[], int flag, int width, int precision, int size)
 {
